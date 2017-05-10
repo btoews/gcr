@@ -1,0 +1,73 @@
+PATH
+  remote: .
+  specs:
+    gcr (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.5.1)
+      public_suffix (~> 2.0, >= 2.0.2)
+    coderay (1.1.1)
+    diff-lcs (1.3)
+    faraday (0.12.1)
+      multipart-post (>= 1.2, < 3)
+    google-protobuf (3.3.0)
+    googleauth (0.5.1)
+      faraday (~> 0.9)
+      jwt (~> 1.4)
+      logging (~> 2.0)
+      memoist (~> 0.12)
+      multi_json (~> 1.11)
+      os (~> 0.9)
+      signet (~> 0.7)
+    grpc (1.2.5)
+      google-protobuf (~> 3.1)
+      googleauth (~> 0.5.1)
+    jwt (1.5.6)
+    little-plugger (1.1.4)
+    logging (2.2.2)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.10)
+    memoist (0.15.0)
+    method_source (0.8.2)
+    multi_json (1.12.1)
+    multipart-post (2.0.0)
+    os (0.9.6)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    public_suffix (2.0.5)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+    signet (0.7.3)
+      addressable (~> 2.3)
+      faraday (~> 0.9)
+      jwt (~> 1.5)
+      multi_json (~> 1.10)
+    slop (3.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gcr!
+  grpc (~> 1.2.5)
+  pry (~> 0.10.4)
+  rspec (~> 3.5.0)
+  rspec-mocks (~> 3.5.0)
+
+BUNDLED WITH
+   1.14.4
