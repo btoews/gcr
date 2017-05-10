@@ -4,8 +4,12 @@ module Greetings
   class Server < Service
     ADDRESS = "127.0.0.1:5567"
 
+    def self.running?
+      !!@pid
+    end
+
     def self.start
-      raise "server already running" if @pid
+      raise "server already running" if running?
 
       @pid = Process.fork do
         s = GRPC::RpcServer.new
@@ -16,7 +20,7 @@ module Greetings
     end
 
     def self.stop
-      raise "server not running" unless @pid
+      raise "server not running" unless running?
 
       Process.kill("TERM", @pid)
       Process.waitpid(@pid)
