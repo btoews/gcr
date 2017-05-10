@@ -23,6 +23,7 @@ describe GCR do
       subject.with_cassette("foo") do
         expect(Greetings::Client.hello("bob")).to eq("hello bob")
         expect(Greetings::Client.hello("sue")).to eq("hello sue")
+        expect(Greetings::Client.hello("sue")).to eq("hello sue")
       end
 
       Greetings::Server.stop
@@ -31,6 +32,10 @@ describe GCR do
       subject.with_cassette("foo") do
         expect(Greetings::Client.hello("bob")).to eq("hello bob")
         expect(Greetings::Client.hello("sue")).to eq("hello sue")
+        expect(Greetings::Client.hello("sue")).to eq("hello sue")
+        expect {
+          Greetings::Client.hello("sue")
+        }.to raise_exception(GCR::NoRecording)
         expect {
           Greetings::Client.hello("fred")
         }.to raise_exception(GCR::NoRecording)
