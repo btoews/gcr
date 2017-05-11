@@ -70,8 +70,7 @@ class GCR::Cassette
       def request_response(*args)
         orig_request_response(*args).tap do |resp|
           key = GCR.serialize_request(*args)
-          GCR.cassette.data[key] ||= []
-          GCR.cassette.data[key] << GCR.serialize_response(resp)
+          GCR.cassette.data[key] ||= GCR.serialize_response(resp)
         end
       end
     end
@@ -93,7 +92,7 @@ class GCR::Cassette
       def request_response(*args)
         key = GCR.serialize_request(*args)
         GCR.cassette.data[key] ||= []
-        if resp = GCR.cassette.data[key].shift
+        if resp = GCR.cassette.data[key]
           GCR.deserialize_response(resp)
         else
           raise GCR::NoRecording
