@@ -47,27 +47,23 @@ class GCR::Cassette
   #
   # Returns nothing.
   def record(&blk)
-    install_record_hook
+    start_recording
     blk.call
-    save
   ensure
-    remove_hook
+    stop_recording
   end
 
   # Play recorded GRPC responses.
   #
   # Returns nothing.
   def play(&blk)
-    load
-    install_play_hook
+    start_playing
     blk.call
   ensure
-    remove_hook
+    stop_playing
   end
 
-  private
-
-  def install_record_hook
+  def start_recording
     GCR.stub.class.class_eval do
       alias_method :orig_request_response, :request_response
 
@@ -81,7 +77,16 @@ class GCR::Cassette
     end
   end
 
-  def install_play_hook
+  def stop_recording
+    GCR.stub.class.class_eval do
+      alias_method :request_response, :orig_request_response
+    end
+    save
+  end
+
+  def start_playing
+    load
+
     GCR.stub.class.class_eval do
       alias_method :orig_request_response, :request_response
 
@@ -97,7 +102,7 @@ class GCR::Cassette
     end
   end
 
-  def remove_hook
+  def stop_playing
     GCR.stub.class.class_eval do
       alias_method :request_response, :orig_request_response
     end

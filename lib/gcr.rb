@@ -38,6 +38,24 @@ module GCR
     @stub || (raise ConfigError, "no cassette dir configured")
   end
 
+  def insert(name)
+    @cassette = Cassette.new(name)
+    if @cassette.exist?
+      @cassette.start_playing
+    else
+      @cassette.start_recording
+    end
+  end
+
+  def remove
+    if @cassette.exist?
+      @cassette.stop_playing
+    else
+      @cassette.stop_recording
+    end
+    @cassette = nil
+  end
+
   def cassette
     @cassette
   end
