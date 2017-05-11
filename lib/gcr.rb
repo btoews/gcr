@@ -84,7 +84,7 @@ module GCR
 
   def serialize_response(resp)
     JSON.dump(
-      "type"  => resp.class.name,
+      "type"  => resp.class.descriptor.name,
       "buf" => Base64.strict_encode64(resp.to_proto)
     )
   end
