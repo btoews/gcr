@@ -24,5 +24,5 @@ end
 To run tests:
 
 ```
-bundle exec rspec
+bundle exec rake
 ```
