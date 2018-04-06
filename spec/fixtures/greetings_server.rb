@@ -29,8 +29,18 @@ module Greetings
 
     def hello(req, _call)
       HelloResponse.new(
-        greeting: "hello #{req.name}"
+        greeting: "resp #{increment_counter} — hello #{req.name}"
       )
+    end
+
+    def increment_counter
+      if defined?(@counter)
+        @counter += 1
+      else
+        @counter = 0
+      end
+
+      return @counter
     end
   end
 end
