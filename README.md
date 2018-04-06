@@ -18,3 +18,11 @@ test "MyController#index works" do
   end
 end
 ```
+
+## Tests
+
+To run tests:
+
+```
+bundle exec rspec
+```
