@@ -91,7 +91,6 @@ class GCR::Cassette
 
       def request_response(*args)
         key = GCR.serialize_request(*args)
-        GCR.cassette.data[key] ||= []
         if resp = GCR.cassette.data[key]
           GCR.deserialize_response(resp)
         else

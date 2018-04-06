@@ -34,9 +34,6 @@ describe GCR do
         expect(Greetings::Client.hello("sue")).to eq("hello sue")
         expect(Greetings::Client.hello("sue")).to eq("hello sue")
         expect {
-          Greetings::Client.hello("sue")
-        }.to raise_exception(GCR::NoRecording)
-        expect {
           Greetings::Client.hello("fred")
         }.to raise_exception(GCR::NoRecording)
       end
