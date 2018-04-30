@@ -5,7 +5,8 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "HelloRequest" do
-    optional :name, :string, 1
+    optional :request_id, :string, 1
+    optional :name, :string, 2
   end
   add_message "HelloResponse" do
     optional :greeting, :string, 1

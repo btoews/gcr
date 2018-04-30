@@ -1,5 +1,7 @@
 class GCR::Cassette
-  attr_reader :data
+  VERSION = 2
+
+  attr_reader :reqs
 
   # Delete all recorded cassettes.
   #
@@ -17,7 +19,7 @@ class GCR::Cassette
   # Returns nothing.
   def initialize(name)
     @path = File.join(GCR.cassette_dir, "#{name}.json")
-    @data = {}
+    @reqs = []
   end
 
   # Does this cassette exist?
@@ -31,7 +33,15 @@ class GCR::Cassette
   #
   # Returns nothing.
   def load
-    @data = JSON.parse(File.read(@path))
+    data = JSON.parse(File.read(@path))
+
+    if data["version"] != VERSION
+      raise "GCR cassette version #{data["version"]} not supported"
+    end
+
+    @reqs = data["reqs"].map do |req, resp|
+      [GCR::Request.from_hash(req), GCR::Response.from_hash(resp)]
+    end
   end
 
   # Persist this cassette.
@@ -39,7 +49,10 @@ class GCR::Cassette
   # Returns nothing.
   def save
     File.open(@path, "w") do |f|
-      f.write(JSON.pretty_generate(data))
+      f.write(JSON.pretty_generate(
+        "version" => VERSION,
+        "reqs"    => reqs,
+      ))
     end
   end
 
@@ -69,8 +82,10 @@ class GCR::Cassette
 
       def request_response(*args)
         orig_request_response(*args).tap do |resp|
-          key = GCR.serialize_request(*args)
-          GCR.cassette.data[key] ||= GCR.serialize_response(resp)
+          req = GCR::Request.from_proto(*args)
+          if GCR.cassette.reqs.none? { |r, _| r == req }
+            GCR.cassette.reqs << [req, GCR::Response.from_proto(resp)]
+          end
         end
       end
     end
@@ -90,12 +105,11 @@ class GCR::Cassette
       alias_method :orig_request_response, :request_response
 
       def request_response(*args)
-        key = GCR.serialize_request(*args)
-        if resp = GCR.cassette.data[key]
-          GCR.deserialize_response(resp)
-        else
-          raise GCR::NoRecording
+        req = GCR::Request.from_proto(*args)
+        GCR.cassette.reqs.each do |other_req, resp|
+          return resp.to_proto if req == other_req
         end
+        raise GCR::NoRecording
       end
     end
   end
@@ -104,5 +118,13 @@ class GCR::Cassette
     GCR.stub.class.class_eval do
       alias_method :request_response, :orig_request_response
     end
+  end
+
+  def [](req)
+    reqs.find { |r| r == req }
+  end
+
+  def []=(req, resp)
+    reqs << [req, resp]
   end
 end

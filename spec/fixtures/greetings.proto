@@ -5,7 +5,8 @@ service Greetings {
 }
 
 message HelloRequest {
-  string name = 1;
+  string request_id = 1;
+  string name = 2;
 }
 
 message HelloResponse {

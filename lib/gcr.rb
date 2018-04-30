@@ -1,8 +1,26 @@
+require "json"
+
 module GCR
   Error = Class.new(StandardError)
   ConfigError = Class.new(Error)
   RunningError = Class.new(Error)
   NoRecording = Class.new(Error)
+
+  # Ignore these fields when matching requests.
+  #
+  # *fields - String field names (eg. "token").
+  #
+  # Returns nothing.
+  def ignore(*fields)
+    ignored_fields.concat(fields.map(&:to_s))
+  end
+
+  # Fields that are ignored when matching requests.
+  #
+  # Returns an Array of Strings.
+  def ignored_fields
+    @ignored_fields ||= []
+  end
 
   # Specify where GCR should store cassettes.
   #
@@ -75,29 +93,9 @@ module GCR
     @cassette = nil
   end
 
-  def serialize_request(route, req, marshal, unmarshal, metadata)
-    JSON.dump(
-      "route" => route,
-      "req"   => Base64.strict_encode64(req.to_proto)
-    )
-  end
-
-  def serialize_response(resp)
-    JSON.dump(
-      "type"  => resp.class.descriptor.name,
-      "buf" => Base64.strict_encode64(resp.to_proto)
-    )
-  end
-
-  def deserialize_response(str)
-    hsh = JSON.parse(str)
-    klass = Google::Protobuf::DescriptorPool.generated_pool.lookup(hsh["type"]).msgclass
-    klass.decode(Base64.strict_decode64(hsh["buf"]))
-  end
-
   extend self
 end
 
-require "json"
-require "base64"
 require "gcr/cassette"
+require "gcr/request"
+require "gcr/response"

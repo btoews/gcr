@@ -24,6 +24,9 @@ describe GCR do
         expect(Greetings::Client.hello("bob")).to eq("resp 0 — hello bob")
         expect(Greetings::Client.hello("sue")).to eq("resp 1 — hello sue")
         expect(Greetings::Client.hello("sue")).to eq("resp 2 — hello sue")
+
+        # with request_id field
+        expect(Greetings::Client.hello("joe", "1")).to eq("resp 3 — hello joe")
       end
 
       Greetings::Server.stop
@@ -36,6 +39,15 @@ describe GCR do
         expect {
           Greetings::Client.hello("fred")
         }.to raise_exception(GCR::NoRecording)
+
+        # with request_id field
+        expect {
+          Greetings::Client.hello("joe", "2")
+        }.to raise_exception(GCR::NoRecording)
+
+        GCR.ignore(:requestId)
+
+        expect(Greetings::Client.hello("joe", "2")).to eq("resp 3 — hello joe")
       end
     end
   end

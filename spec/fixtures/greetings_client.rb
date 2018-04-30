@@ -7,9 +7,10 @@ module Greetings
       @stub ||= Stub.new(Server::ADDRESS, :this_channel_is_insecure)
     end
 
-    def self.hello(name)
+    def self.hello(name, request_id="")
       stub.hello(HelloRequest.new(
-        name: name
+        name: name,
+        request_id: request_id,
       )).greeting
     end
   end
