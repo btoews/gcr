@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    gcr (1.0.0)
-      google-protobuf (~> 3.5, >= 3.3.0)
+    gcr (1.0.1)
+      google-protobuf (~> 3.3)
 
 GEM
   remote: https://rubygems.org/
