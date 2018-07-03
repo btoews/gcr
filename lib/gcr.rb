@@ -53,7 +53,7 @@ module GCR
   #
   # Returns a A GRPC::ClientStub instance. Raises ConfigError if not configured.
   def stub
-    @stub || (raise ConfigError, "no cassette dir configured")
+    @stub || (raise ConfigError, "no stub configured")
   end
 
   def insert(name)
