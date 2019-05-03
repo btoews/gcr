@@ -2,7 +2,7 @@ class GCR::Response
   def self.from_proto(proto_resp)
     new(
       "class_name" => proto_resp.class.name,
-      "body"       => proto_resp.to_json,
+      "body"       => proto_resp.to_json(emit_defaults: true)
     )
   end
 
