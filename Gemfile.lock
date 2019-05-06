@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gcr (1.0.1)
+    gcr (1.0.2)
       google-protobuf (~> 3.7)
 
 GEM
