@@ -3,7 +3,7 @@ class GCR::Request
     new(
       "route"      => route,
       "class_name" => proto_req.class.name,
-      "body"       => proto_req.to_json,
+      "body"       => proto_req.to_json(emit_defaults: true),
     )
   end
 
